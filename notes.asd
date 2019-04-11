@@ -8,7 +8,9 @@
   :depends-on (#:sdl2
 	       #:swank.live)
   :components ((:file "package")
+	       (:file "utils")
 	       (:file "draw")
+	       (:file "button")
 	       (:file "painter")
                (:file "notes")))
 

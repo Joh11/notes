@@ -7,15 +7,21 @@
   (sdl2:with-init (:everything)
     (sdl2:with-window (win :flags '(:shown) :title "Notes")
       (let ((renderer (sdl2:create-renderer win))
-	    (painter (make-instance 'painter)))
+	    (painter (make-instance 'painter))
+	    (button (make-registered-button 30 30 10 10
+				 :on-click (lambda () (sdl2:push-quit-event)))))
 
 	;; Register the painter
 	(push painter *draw-list*)
+	(push button *draw-list*)
 	(sdl2:with-event-loop (:method :poll)
 	  (:mousemotion (:x x :y y :state button)
 			;; add a new rect to the list
 			(unless (= 0 (logand button 1)) ;; if the left click is hold
 			  (painter.add painter x y)))
+	  (:mousebuttondown (:type pressedp :button button-type :x x :y y)
+			    (buttons-click pressedp button-type x y))
+	  
 	  (:idle ()
 		 ;; TODO clean & update screen
 		 ;; clear to black
